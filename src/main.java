@@ -36,7 +36,7 @@ public class main {
             } catch(Exception e) {
                 System.out.println("Enter a valid input");
                 continue;
-            }            
+            }
         }
     }
 }
