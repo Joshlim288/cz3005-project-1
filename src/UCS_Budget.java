@@ -67,6 +67,9 @@ public class UCS_Budget extends Algorithm {
 					if (mapNode.getValue().cost + curNode.totalCost > budget) { // budget exceeded
 						continue;
 					}
+                    if (mapNode.getValue().dist == -1 || mapNode.getValue().cost == -1) {
+                        System.out.println("-1");
+                    }
 					childNode = new queueNode(mapNode.getKey(), mapNode.getValue().dist + curNode.dist, mapNode.getValue().cost + curNode.totalCost);
 					childNode.path = curNode.path + "->" + childNode.element;
 					
@@ -74,9 +77,9 @@ public class UCS_Budget extends Algorithm {
 						priorityQueue.add(childNode);
 					} else { // element has previously been queued
 						for(queueNode node: priorityQueue){
-							if (node.dist > curNode.dist){ // if path in queue is longer than this new path, replace entry
+							if (node.equals(childNode) && node.dist > childNode.dist){ // if path in queue is longer than this new path, replace entry
 								priorityQueue.remove(childNode); // since queueNode.equals only compares .element, will remove old node with same element
-								priorityQueue.add(childNode);
+								priorityQueue.add(childNode); // add the new node into the queue
 								break;
 							}
 						}

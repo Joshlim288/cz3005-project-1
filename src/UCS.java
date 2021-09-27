@@ -68,7 +68,7 @@ public class UCS extends Algorithm {
 						priorityQueue.add(childNode);
 					} else { // element has previously been queued
 						for(queueNode node: priorityQueue){
-							if (node.dist > curNode.dist){ // if path in queue is longer than this new path, replace entry
+							if (node.equals(childNode) && node.dist > childNode.dist){ // if path in queue is longer than this new path, replace entry
 								priorityQueue.remove(childNode); // since queueNode.equals only compares .element, will remove old node with same element
 								priorityQueue.add(childNode);
 								break;
