@@ -9,7 +9,7 @@ public class main {
         int menuOption = 0, startNode = 0, endNode = 0;
         while (menuOption != 4) {
             System.out.print(
-                "CZ3005 AI Project 1\n" +
+                "\nCZ3005 AI Project 1\n" +
                 "1 - Task 1\n"  +
                 "2 - Task 2\n"  +
                 "3 - Task 3\n"  +
@@ -20,7 +20,7 @@ public class main {
             try{
                 menuOption = Integer.parseInt(sc.nextLine());
                 switch(menuOption){
-                    case(1) -> toRun = new BFS();
+                    case(1) -> toRun = new UCS();
                     case(4) -> {
                         sc.close();
                         return;
