@@ -3,16 +3,18 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.Map.Entry;
 
-public class UCS extends Algorithm {
+public class UCS_Budget extends Algorithm {
     // for implementing the priority queue: automaticallly sorts the queue by using .compareTo
 	class queueNode implements Comparable<queueNode>{
 		int element;
 		float dist;
+		int totalCost;
 		String path;
 
-		queueNode(int element, float dist){
+		queueNode(int element, float dist, int cost){
 			this.element = element;
 			this.dist = dist;
+			this.totalCost = cost;
 			this.path = "";
 		}
 
@@ -31,7 +33,7 @@ public class UCS extends Algorithm {
 	}
 
 	public void run(int startNode, int endNode)  {
-		queueNode curNode = new queueNode(startNode, 0);
+		queueNode curNode = new queueNode(startNode, 0, 0);
 		queueNode childNode;
         PriorityQueue<queueNode> priorityQueue = new PriorityQueue<queueNode>();
 		Set<Integer> explored = new HashSet<Integer>();
@@ -48,8 +50,9 @@ public class UCS extends Algorithm {
 
 			// node chosen to expand is goal state, search is complete
 			if (curNode.element == endNode) {
-				System.out.println("\nShortest Path: " + curNode.path);
-				System.out.println("Shortest Distance: " + curNode.dist + "\n"); 
+				System.out.println("\nShortest path: " + curNode.path);
+				System.out.println("Shortest distance: " + curNode.dist); 
+                System.out.println("Total energy cost: " + curNode.totalCost  + "\n");
 				return;
 			}
 
@@ -61,7 +64,10 @@ public class UCS extends Algorithm {
             
 				// Examine each neighbour of the expanded node
 				for (Entry<Integer,adjNode> mapNode: adjMatrix.get(curNode.element).entrySet()){
-					childNode = new queueNode(mapNode.getKey(), mapNode.getValue().dist + curNode.dist);
+					if (mapNode.getValue().cost + curNode.totalCost > budget) { // budget exceeded
+						continue;
+					}
+					childNode = new queueNode(mapNode.getKey(), mapNode.getValue().dist + curNode.dist, mapNode.getValue().cost + curNode.totalCost);
 					childNode.path = curNode.path + "->" + childNode.element;
 					
 					if (!priorityQueue.contains(childNode)) { // since queueNode.equals only compares .element, will match regardless of dist
@@ -82,6 +88,7 @@ public class UCS extends Algorithm {
 		System.out.println("No path found");
 	}
 }
+
 
 
 

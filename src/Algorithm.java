@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 public abstract class Algorithm {
     public static Map<Integer, ArrayList<Integer>> coordMap;
     public static Map<Integer, Map<Integer, adjNode>> adjMatrix;
+    public static int budget = 0;
     public static class adjNode {
         public int cost = -1;
         public float dist = -1;

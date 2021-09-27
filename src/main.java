@@ -20,7 +20,14 @@ public class main {
             try{
                 menuOption = Integer.parseInt(sc.nextLine());
                 switch(menuOption){
-                    case(1) -> toRun = new UCS();
+                    case(1) -> {
+                        toRun = new UCS();
+                    }
+                    case (2) -> {
+                        System.out.print("Enter budget: ");
+                        Algorithm.budget = Integer.parseInt(sc.nextLine());
+                        toRun = new UCS_Budget();
+                    }
                     case(4) -> {
                         sc.close();
                         return;

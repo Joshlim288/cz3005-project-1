@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+@Deprecated
 public class BFS extends Algorithm{
     
     public void run(int startNode, int endNode) {
