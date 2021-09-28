@@ -28,6 +28,11 @@ public class main {
                         Algorithm.budget = Integer.parseInt(sc.nextLine());
                         toRun = new UCS_Budget();
                     }
+                    case (3) -> {
+                        System.out.print("Enter budget: ");
+                        Algorithm.budget = Integer.parseInt(sc.nextLine());
+                        toRun = new AStar();
+                    }
                     case(4) -> {
                         sc.close();
                         return;
