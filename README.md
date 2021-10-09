@@ -12,9 +12,9 @@ OpenJDK 64-Bit Server VM Temurin-16.0.2+7 (build 16.0.2+7, mixed mode, sharing)
 
 If you encounter a linkage error, you will need either need to update your OpenJDK or recompile the project as follows:
 
-Navigate to `cz3005-project-1/src` and run `javac -cp "lib/*;." -d ../out  *.java`
+- Navigate to `cz3005-project-1/src` and run `javac -cp "lib/*;." -d ../out  *.java`
 
-Navigate to `cz3005-project-1/out` and run `java -cp "lib/*;." main`
+- You can run the recompiled project by navigating to `cz3005-project-1/out` and run `java -cp "lib/*;." main`
 
 If you wish to change the data used, navigate to `cz3005-project-1/out/data` and modify the json files there
 
