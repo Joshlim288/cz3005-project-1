@@ -48,17 +48,19 @@ public class AStar extends Algorithm{
 		// add startNode to the queue
 		curNode.path = Integer.toString(startNode);
 		priorityQueue.add(curNode);
-        
+        int nodesExamined = 0;
 		// continue until all nodes have been expanded
 		while(priorityQueue.size() != 0){
 			// set current node to top of the priority queue
+			nodesExamined++;
 			curNode = priorityQueue.poll();
 
 			// node chosen to expand is goal state, search is complete
 			if (curNode.element == endNode) {
 				System.out.println("\nShortest path: " + curNode.path);
 				System.out.println("Shortest distance: " + curNode.totalDist); 
-                System.out.println("Total energy cost: " + curNode.totalCost  + "\n");
+                System.out.println("Total energy cost: " + curNode.totalCost);
+				System.out.println("Nodes examined: " + nodesExamined  + "\n");
 				return;
 			}
 

@@ -41,8 +41,10 @@ public class UCS_Budget extends Algorithm {
 		// add startNode to the queue
 		curNode.path = Integer.toString(startNode);
 		priorityQueue.add(curNode);
+		int nodesExamined = 0;
 		// continue until all nodes have been expanded
 		while(priorityQueue.size() != 0){
+			nodesExamined++;
 			// set current node to top of the priority queue
 			curNode = priorityQueue.poll();
 
@@ -50,7 +52,8 @@ public class UCS_Budget extends Algorithm {
 			if (curNode.element == endNode) {
 				System.out.println("\nShortest path: " + curNode.path);
 				System.out.println("Shortest distance: " + curNode.totalDist); 
-                System.out.println("Total energy cost: " + curNode.totalCost  + "\n");
+                System.out.println("Total energy cost: " + curNode.totalCost);
+				System.out.println("Nodes Examined: "+nodesExamined  + "\n");				
 				return;
 			}
 
