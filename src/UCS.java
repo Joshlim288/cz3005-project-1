@@ -7,18 +7,18 @@ public class UCS extends Algorithm {
     // for implementing the priority queue: automaticallly sorts the queue by using .compareTo
 	class queueNode implements Comparable<queueNode>{
 		int element;
-		float dist;
+		float totalDist;
 		String path;
 
 		queueNode(int element, float dist){
 			this.element = element;
-			this.dist = dist;
+			this.totalDist = dist;
 			this.path = "";
 		}
 
 		@Override
 		public int compareTo(queueNode that) {
-			return Float.compare(this.dist, that.dist);
+			return Float.compare(this.totalDist, that.totalDist);
 		};
 
 		@Override
@@ -49,7 +49,7 @@ public class UCS extends Algorithm {
 			// node chosen to expand is goal state, search is complete
 			if (curNode.element == endNode) {
 				System.out.println("\nShortest Path: " + curNode.path);
-				System.out.println("Shortest Distance: " + curNode.dist + "\n"); 
+				System.out.println("Shortest Distance: " + curNode.totalDist + "\n"); 
 				return;
 			}
 
@@ -60,16 +60,16 @@ public class UCS extends Algorithm {
 				explored.add(curNode.element);
             
 				// Examine each neighbour of the expanded node
-				for (Entry<Integer,adjNode> mapNode: adjMatrix.get(curNode.element).entrySet()){
-					childNode = new queueNode(mapNode.getKey(), mapNode.getValue().dist + curNode.dist);
+				for (Entry<Integer,adjNode> mapNode: adjList.get(curNode.element).entrySet()){
+					childNode = new queueNode(mapNode.getKey(), mapNode.getValue().dist + curNode.totalDist);
 					childNode.path = curNode.path + "->" + childNode.element;
 					
 					if (!priorityQueue.contains(childNode)) { // since queueNode.equals only compares .element, will match regardless of dist
 						priorityQueue.add(childNode);
 					} else { // element has previously been queued
 						for(queueNode node: priorityQueue){
-							if (node.equals(childNode) && node.dist > childNode.dist){ // if path in queue is longer than this new path, replace entry
-								priorityQueue.remove(childNode); // since queueNode.equals only compares .element, will remove old node with same element
+							if (node.equals(childNode) && node.totalDist > childNode.totalDist){ // if path in queue is longer than this new path, replace entry
+								priorityQueue.remove(node); // will remove old node with same element
 								priorityQueue.add(childNode);
 								break;
 							}

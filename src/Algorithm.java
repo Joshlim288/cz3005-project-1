@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 
 public abstract class Algorithm {
     public static Map<Integer, ArrayList<Integer>> coordMap;
-    public static Map<Integer, Map<Integer, adjNode>> adjMatrix;
+    public static Map<Integer, Map<Integer, adjNode>> adjList;
     public static int budget = 0;
     public static class adjNode {
         public int cost = -1;
@@ -24,7 +24,7 @@ public abstract class Algorithm {
 
         // Coord.json
         try {
-            jsonString = readFileAsString("src/data/Coord.json");
+            jsonString = readFileAsString("data/Coord.json");
             coordMap = new Gson().fromJson(
                 jsonString, new TypeToken<HashMap<Integer, ArrayList<Integer>>>() {}.getType()
             );
@@ -34,18 +34,18 @@ public abstract class Algorithm {
         
         // G.json
         try {
-            jsonString = readFileAsString("src/data/G.json");
+            jsonString = readFileAsString("data/G.json");
             Map<Integer, ArrayList<Integer>> gMap = new Gson().fromJson(
                 jsonString, new TypeToken<HashMap<Integer, ArrayList<Integer>>>() {}.getType()
             );
             Map<Integer, adjNode> innerMap;
-            adjMatrix = new HashMap<Integer,Map<Integer, adjNode>>();
+            adjList = new HashMap<Integer,Map<Integer, adjNode>>();
             for (Map.Entry<Integer,ArrayList<Integer>> entry : gMap.entrySet()){
                 innerMap = new HashMap<Integer, adjNode>();
                 for (Integer dest: entry.getValue()){
                     innerMap.put(dest, new adjNode());
                 }
-                adjMatrix.put(entry.getKey(), innerMap);
+                adjList.put(entry.getKey(), innerMap);
             }
         } catch(Exception e) {
             System.out.println("Loading of G.json failed");
@@ -53,7 +53,7 @@ public abstract class Algorithm {
         
         // Cost.json
         try {
-            jsonString = readFileAsString("src/data/Cost.json");
+            jsonString = readFileAsString("data/Cost.json");
             Map<String, Integer> tempMap = new Gson().fromJson(
                 jsonString, new TypeToken<HashMap<String, Integer>>() {}.getType()
             );
@@ -61,7 +61,7 @@ public abstract class Algorithm {
             Map<Integer, adjNode> innerMap; 
             for (Map.Entry<String, Integer> mapping :tempMap.entrySet()){
                 adj = mapping.getKey().split(",");
-                innerMap = adjMatrix.get(Integer.parseInt(adj[0]));
+                innerMap = adjList.get(Integer.parseInt(adj[0]));
                 innerMap.get(Integer.parseInt(adj[1])).cost = mapping.getValue();
             }
         } catch(Exception e) {
@@ -70,7 +70,7 @@ public abstract class Algorithm {
 
         // Dist.json
         try {
-            jsonString = readFileAsString("src/data/Dist.json");
+            jsonString = readFileAsString("data/Dist.json");
             Map<String, Float> tempMap = new Gson().fromJson(
                 jsonString, new TypeToken<HashMap<String, Float>>() {}.getType()
             );
@@ -78,7 +78,7 @@ public abstract class Algorithm {
             Map<Integer, adjNode> innerMap; 
             for (Map.Entry<String, Float> mapping :tempMap.entrySet()){
                 adj = mapping.getKey().split(",");
-                innerMap = adjMatrix.get(Integer.parseInt(adj[0]));
+                innerMap = adjList.get(Integer.parseInt(adj[0]));
                 innerMap.get(Integer.parseInt(adj[1])).dist = mapping.getValue();
             }
         } catch(Exception e) {

@@ -7,14 +7,14 @@ public class AStar extends Algorithm{
     // for implementing the priority queue: automaticallly sorts the queue by using .compareTo
 	class queueNode implements Comparable<queueNode>{
 		int element;
-		float dist;
+		float totalDist;
 		int totalCost;
         double heuristic;
 		String path;
 
 		queueNode(int element, float dist, int cost, double heuristic){
 			this.element = element;
-			this.dist = dist;
+			this.totalDist = dist;
 			this.totalCost = cost;
             this.heuristic = heuristic;
 			this.path = "";
@@ -22,7 +22,7 @@ public class AStar extends Algorithm{
 
 		@Override
 		public int compareTo(queueNode that) {
-			return Double.compare(this.dist+this.heuristic, that.dist+that.heuristic);
+			return Double.compare(this.totalDist+this.heuristic, that.totalDist+that.heuristic);
 		};
 
 		@Override
@@ -57,7 +57,7 @@ public class AStar extends Algorithm{
 			// node chosen to expand is goal state, search is complete
 			if (curNode.element == endNode) {
 				System.out.println("\nShortest path: " + curNode.path);
-				System.out.println("Shortest distance: " + curNode.dist); 
+				System.out.println("Shortest distance: " + curNode.totalDist); 
                 System.out.println("Total energy cost: " + curNode.totalCost  + "\n");
 				return;
 			}
@@ -69,7 +69,7 @@ public class AStar extends Algorithm{
 				explored.add(curNode.element);
             
 				// Examine each neighbour of the expanded node
-				for (Entry<Integer,adjNode> mapNode: adjMatrix.get(curNode.element).entrySet()){
+				for (Entry<Integer,adjNode> mapNode: adjList.get(curNode.element).entrySet()){
 					if (mapNode.getValue().cost + curNode.totalCost > budget) { // budget exceeded
 						continue;
 					}
@@ -78,7 +78,8 @@ public class AStar extends Algorithm{
                     }
 					childNode = new queueNode(
                                         mapNode.getKey(), 
-                                        mapNode.getValue().dist + curNode.dist, mapNode.getValue().cost + curNode.totalCost, 
+                                        mapNode.getValue().dist + curNode.totalDist, 
+										mapNode.getValue().cost + curNode.totalCost, 
                                         getHeuristic(mapNode.getKey(), endNode));
 
 					childNode.path = curNode.path + "->" + childNode.element;
@@ -87,8 +88,8 @@ public class AStar extends Algorithm{
 						priorityQueue.add(childNode);
 					} else { // element has previously been queued
 						for(queueNode node: priorityQueue){
-							if (node.equals(childNode) && node.dist+node.heuristic > childNode.dist+childNode.heuristic){ // if path in queue is longer than this new path, replace entry
-								priorityQueue.remove(childNode); // since queueNode.equals only compares .element, will remove old node with same element
+							if (node.equals(childNode) && node.totalDist+node.heuristic > childNode.totalDist+childNode.heuristic){ // if path in queue is longer than this new path, replace entry
+								priorityQueue.remove(node); // will remove old node with same element
 								priorityQueue.add(childNode); // add the new node into the queue
 								break;
 							}
